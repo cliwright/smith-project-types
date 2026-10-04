@@ -1,0 +1,8 @@
+version: '3'
+
+tasks:
+  default:
+    cmds:
+      - task --list
+
+  # verify: regenerate + check .sha256 sidecars (see mvp-first-steps.md, M5).
