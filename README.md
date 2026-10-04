@@ -1,0 +1,1 @@
+# smith-project-types
