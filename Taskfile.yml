@@ -5,4 +5,7 @@ tasks:
     cmds:
       - task --list
 
-  # verify: regenerate + check .sha256 sidecars (see mvp-first-steps.md, M5).
+  verify:
+    desc: Verify .sha256 sidecars against project-type.json files
+    cmds:
+      - ./scripts/verify-hashes.sh

@@ -219,6 +219,7 @@ __marimo__/
 # Streamlit
 .streamlit/secrets.toml
 
-# Smith registry layout: python/lib/ is a real directory, not a build artifact.
-# The Python template's lib/ rule above would otherwise prune it from git.
-!python/lib/
+# Smith registry layout: <language>/<flavor>/<kind>/ directories hold real
+# content (e.g. python/astral/lib/v1/), not build artifacts. The Python
+# template's lib/ rule above would otherwise prune every kind dir named lib.
+!**/lib/
