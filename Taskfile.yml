@@ -9,3 +9,8 @@ tasks:
     desc: Verify .sha256 sidecars against project-type.json files
     cmds:
       - ./scripts/verify-hashes.sh
+
+  hash:
+    desc: Regenerate .sha256 sidecars after editing a project type
+    cmds:
+      - ./scripts/verify-hashes.sh --write

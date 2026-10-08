@@ -10,9 +10,10 @@
   "working_dir": "project",
 
   "targets": {
-    "lint":   ["uv run ruff check ."],
-    "format": ["uv run ruff format ."],
-    "test":   ["uv run pytest"],
+    "setup":  ["uv venv", "uv sync --extra dev"],
+    "lint":   ["uv run ruff format --check --diff src tests", "uv run ruff check src tests --no-fix"],
+    "format": ["uv run ruff format src tests", "uv run ruff check src tests --fix"],
+    "test":   ["uv run pytest -vv --doctest-modules --cov=src --cov-report=html --cov-report=term-missing --junitxml=test-results/junit.xml src tests"],
     "build":  ["uv build"],
     "clean":  ["rm -rf dist .venv"]
   },

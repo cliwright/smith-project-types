@@ -1,6 +1,8 @@
 #!/usr/bin/env bash
-# Verify .sha256 sidecars against every project-type.json in the registry.
-# Fails if a sidecar is missing or drifted from its file. Run before committing.
+# Manage .sha256 sidecars for every project-type.json in the registry.
+#   verify-hashes.sh          verify sidecars against their files (pre-commit)
+#   verify-hashes.sh --write  regenerate sidecars after editing a type
+# Fails if a sidecar is missing or drifted from its file.
 set -euo pipefail
 cd "$(dirname "$0")/.."
 
@@ -13,6 +15,22 @@ hash_file() {
     shasum -a 256 "$1" | awk '{for (i = 1; i <= NF; i++) if ($i ~ /^[0-9a-f]{64}$/) print $i}'
   fi
 }
+
+mode=verify
+case "${1:-}" in
+  "")        ;;
+  --write)   mode=write ;;
+  --help|-h) grep '^#' "$0" | head -n -1; exit 0 ;;
+  *)         echo "usage: $0 [--write]" >&2; exit 2 ;;
+esac
+
+if [[ "$mode" == write ]]; then
+  while IFS= read -r -d '' f; do
+    printf '%s  %s\n' "$(hash_file "$f")" "$(basename "$f")" > "$f.sha256"
+    echo "wrote    $f.sha256"
+  done < <(find . -name project-type.json -not -path './.git/*' -print0)
+  exit 0
+fi
 
 status=0
 while IFS= read -r -d '' f; do
