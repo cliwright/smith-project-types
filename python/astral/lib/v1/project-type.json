@@ -22,7 +22,8 @@
     "format": ["uv run ruff format --config '{{.config_path}}' src tests", "uv run ruff check --config '{{.config_path}}' src tests --fix"],
     "test":   ["uv run pytest -c '{{.config_path}}' -vv --doctest-modules --cov=src --cov-report=html --cov-report=term-missing --junitxml=test-results/junit.xml src tests"],
     "build":  ["uv build"],
-    "clean":  ["rm -rf dist .venv"]
+    "clean":  ["rm -rf dist .venv"],
+    "show": ["echo '{{.config_path}}'"]
   },
 
   "depends_on": {
