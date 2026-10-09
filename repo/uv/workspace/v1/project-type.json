@@ -1,0 +1,14 @@
+{
+  "name": "repo/uv/workspace",
+  "version": 1,
+  "description": "uv workspace root environment",
+
+  "tools": ["uv"],
+
+  "working_dir": "project",
+
+  "targets": {
+    "setup": ["uv venv", "uv sync --extra dev"],
+    "clean": ["rm -rf .venv"]
+  }
+}
