@@ -1,0 +1,38 @@
+{
+  "name": "docker/compose/image",
+  "version": 1,
+  "description": "OCI image built from a Dockerfile, parameterized through compose.yaml (docker compose build)",
+
+  "capabilities": ["buildable", "packageable"],
+
+  "tools": ["docker"],
+
+  "working_dir": "project",
+
+  "params": {
+    "registry": {
+      "default": "localhost:5000",
+      "description": "registry prefix for the image tag, no trailing slash; exported to steps as REGISTRY (compose.yaml interpolates it)"
+    },
+    "image": {
+      "default": "app",
+      "description": "image name; exported to steps as IMAGE (compose.yaml interpolates it)"
+    },
+    "tag": {
+      "default": "dev",
+      "description": "image tag; exported to steps as TAG (compose.yaml interpolates it) — set it in smith.yml params or override per project"
+    }
+  },
+
+  "environment": {
+    "REGISTRY": "{{.registry}}",
+    "IMAGE": "{{.image}}",
+    "TAG": "{{.tag}}"
+  },
+
+  "targets": {
+    "build": ["docker compose build"],
+    "push": ["docker compose push"],
+    "show": ["echo '{{.registry}}/{{.image}}:{{.tag}}'"]
+  }
+}

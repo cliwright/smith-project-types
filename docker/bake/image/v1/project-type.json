@@ -1,0 +1,38 @@
+{
+  "name": "docker/bake/image",
+  "version": 1,
+  "description": "OCI image built from a Dockerfile, parameterized through docker-bake.hcl (docker buildx bake)",
+
+  "capabilities": ["buildable", "packageable"],
+
+  "tools": ["docker"],
+
+  "working_dir": "project",
+
+  "params": {
+    "registry": {
+      "default": "localhost:5000",
+      "description": "registry prefix for the image tag, no trailing slash; exported to steps as REGISTRY (the bake.hcl variable reads it)"
+    },
+    "image": {
+      "default": "app",
+      "description": "image name; exported to steps as IMAGE (the bake.hcl variable reads it)"
+    },
+    "tag": {
+      "default": "dev",
+      "description": "image tag; exported to steps as TAG (the bake.hcl variable reads it) — set it in smith.yml params or override per project"
+    }
+  },
+
+  "environment": {
+    "REGISTRY": "{{.registry}}",
+    "IMAGE": "{{.image}}",
+    "TAG": "{{.tag}}"
+  },
+
+  "targets": {
+    "build": ["docker buildx bake"],
+    "push": ["docker buildx bake --push"],
+    "show": ["echo '{{.registry}}/{{.image}}:{{.tag}}'"]
+  }
+}
