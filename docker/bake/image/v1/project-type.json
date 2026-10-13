@@ -31,8 +31,17 @@
   },
 
   "targets": {
-    "build": ["docker buildx bake"],
-    "push": ["docker buildx bake --push"],
-    "show": ["echo '{{.registry}}/{{.image}}:{{.tag}}'"]
+    "build": {
+      "description": "Build the image with docker buildx bake",
+      "steps": ["docker buildx bake"]
+    },
+    "push": {
+      "description": "Build and push the image via docker buildx bake --push",
+      "steps": ["docker buildx bake --push"]
+    },
+    "show": {
+      "description": "Print the fully-qualified image reference",
+      "steps": ["echo '{{.registry}}/{{.image}}:{{.tag}}'"]
+    }
   }
 }

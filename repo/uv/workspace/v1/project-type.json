@@ -8,7 +8,13 @@
   "working_dir": "project",
 
   "targets": {
-    "setup": ["uv venv", "uv sync --extra dev"],
-    "clean": ["rm -rf .venv"]
+    "setup": {
+      "description": "Create the workspace venv and sync all workspace members",
+      "steps": ["uv venv", "uv sync --extra dev"]
+    },
+    "clean": {
+      "description": "Remove the workspace virtualenv",
+      "steps": ["rm -rf .venv"]
+    }
   }
 }

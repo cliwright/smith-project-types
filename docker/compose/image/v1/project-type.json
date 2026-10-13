@@ -31,8 +31,17 @@
   },
 
   "targets": {
-    "build": ["docker compose build"],
-    "push": ["docker compose push"],
-    "show": ["echo '{{.registry}}/{{.image}}:{{.tag}}'"]
+    "build": {
+      "description": "Build the image with docker compose build",
+      "steps": ["docker compose build"]
+    },
+    "push": {
+      "description": "Push the image with docker compose push",
+      "steps": ["docker compose push"]
+    },
+    "show": {
+      "description": "Print the fully-qualified image reference",
+      "steps": ["echo '{{.registry}}/{{.image}}:{{.tag}}'"]
+    }
   }
 }

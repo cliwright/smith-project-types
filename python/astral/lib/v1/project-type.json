@@ -17,13 +17,34 @@
   },
 
   "targets": {
-    "setup":  ["uv venv", "uv sync --extra dev"],
-    "lint":   ["uv run ruff format --check --diff --config '{{.config_path}}' src tests", "uv run ruff check --config '{{.config_path}}' src tests --no-fix"],
-    "format": ["uv run ruff format --config '{{.config_path}}' src tests", "uv run ruff check --config '{{.config_path}}' src tests --fix"],
-    "test":   ["uv run pytest -c '{{.config_path}}' -vv --doctest-modules --cov=src --cov-report=html --cov-report=term-missing --junitxml=test-results/junit.xml src tests"],
-    "build":  ["uv build"],
-    "clean":  ["rm -rf dist .venv"],
-    "show": ["echo '{{.config_path}}'"]
+    "setup": {
+      "description": "Create the venv and install dependencies including dev extras",
+      "steps": ["uv venv", "uv sync --extra dev"]
+    },
+    "lint": {
+      "description": "Check formatting and lint without modifying files",
+      "steps": ["uv run ruff format --check --diff --config '{{.config_path}}' src tests", "uv run ruff check --config '{{.config_path}}' src tests --no-fix"]
+    },
+    "format": {
+      "description": "Apply ruff formatting and safe lint fixes in place",
+      "steps": ["uv run ruff format --config '{{.config_path}}' src tests", "uv run ruff check --config '{{.config_path}}' src tests --fix"]
+    },
+    "test": {
+      "description": "Run pytest with doctests, coverage, and junit output",
+      "steps": ["uv run pytest -c '{{.config_path}}' -vv --doctest-modules --cov=src --cov-report=html --cov-report=term-missing --junitxml=test-results/junit.xml src tests"]
+    },
+    "build": {
+      "description": "Build source and wheel distributions with uv build",
+      "steps": ["uv build"]
+    },
+    "clean": {
+      "description": "Remove build artifacts and the virtualenv",
+      "steps": ["rm -rf dist .venv"]
+    },
+    "show": {
+      "description": "Print the configured ruff/pytest config path",
+      "steps": ["echo '{{.config_path}}'"]
+    }
   },
 
   "depends_on": {
