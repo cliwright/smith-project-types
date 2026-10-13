@@ -28,9 +28,9 @@ the language namespace). The version lives in the path (`v1/`) and in the file
 2. Generate the definition sidecar in the same directory:
    `sha256sum project-type.json > project-type.json.sha256`
    (on macOS without coreutils: `shasum -a 256 project-type.json | awk '{print $NF"  project-type.json"}' > project-type.json.sha256`)
-3. `task publish` — packs every type into its ingot (`smith type pack`): the
+3. `task publish` — packs every type into its ingot (`smith smelt`): the
    tar archive of `project-type.json` plus the type's `scripts/` and `help/`
-   directories, plus the ingot's sidecar. `type pack` fails loudly when the
+   directories, plus the ingot's sidecar. `smith smelt` fails loudly when the
    directory position and the file disagree (wrong name or version), so an
    incoherent artifact can never be published.
 4. `task verify` — every sidecar (definition and ingot) must pass.

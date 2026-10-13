@@ -8,7 +8,7 @@ cd "$(dirname "$0")/.."
 while IFS= read -r -d '' f; do
   d="$(dirname "$f")"
   echo "packing ${d#./}"
-  smith type pack "$d"
+  smith smelt --path "$d"
 done < <(find . -name project-type.json -not -path './.git/*' -print0)
 
 ./scripts/verify-hashes.sh
