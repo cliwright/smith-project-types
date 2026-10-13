@@ -10,7 +10,7 @@
   "targets": {
     "setup": {
       "description": "Create the workspace venv and sync all workspace members",
-      "steps": ["./{{.SMITH_TYPE_DIR}}/setup.sh"]
+      "steps": ["./{{.SMITH_TYPE_DIR}}/scripts/setup.sh"]
     },
     "clean": {
       "description": "Remove the workspace virtualenv",
