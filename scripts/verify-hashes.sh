@@ -1,5 +1,7 @@
 #!/usr/bin/env bash
-# Manage .sha256 sidecars for every project-type.json in the registry.
+# Manage .sha256 sidecars for every published artifact in the registry:
+# project-type.json files and the packed ingots (*.ingot) that smith sync
+# actually downloads.
 #   verify-hashes.sh          verify sidecars against their files (pre-commit)
 #   verify-hashes.sh --write  regenerate sidecars after editing a type
 # Fails if a sidecar is missing or drifted from its file.
@@ -28,18 +30,19 @@ if [[ "$mode" == write ]]; then
   while IFS= read -r -d '' f; do
     printf '%s  %s\n' "$(hash_file "$f")" "$(basename "$f")" > "$f.sha256"
     echo "wrote    $f.sha256"
-  done < <(find . -name project-type.json -not -path './.git/*' -print0)
+  done < <(find . \( -name project-type.json -o -name '*.ingot' \) -not -path './.git/*' -print0)
   exit 0
 fi
 
 status=0
-while IFS= read -r -d '' f; do
+verify_one() {
+  local f="$1" sidecar want got
   sidecar="$f.sha256"
   want="$(hash_file "$f")  $(basename "$f")"
   if [[ ! -f "$sidecar" ]]; then
     echo "MISSING  $sidecar"
     status=1
-    continue
+    return
   fi
   got="$(cat "$sidecar")"
   if [[ "$got" != "$want" ]]; then
@@ -50,7 +53,11 @@ while IFS= read -r -d '' f; do
   else
     echo "ok       $sidecar"
   fi
-done < <(find . -name project-type.json -not -path './.git/*' -print0)
+}
+
+while IFS= read -r -d '' f; do
+  verify_one "$f"
+done < <(find . \( -name project-type.json -o -name '*.ingot' \) -not -path './.git/*' -print0)
 
 if [[ "$status" -ne 0 ]]; then
   echo "sidecar verification failed" >&2

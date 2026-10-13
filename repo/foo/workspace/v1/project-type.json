@@ -1,0 +1,20 @@
+{
+  "name": "repo/foo/workspace",
+  "version": 1,
+  "description": "test scripts",
+
+  "tools": ["uv"],
+
+  "working_dir": "project",
+
+  "targets": {
+    "setup": {
+      "description": "Create the workspace venv and sync all workspace members",
+      "steps": ["./{{.SMITH_TYPE_DIR}}/setup.sh"]
+    },
+    "clean": {
+      "description": "Remove the workspace virtualenv",
+      "steps": ["rm -rf .venv"]
+    }
+  }
+}
